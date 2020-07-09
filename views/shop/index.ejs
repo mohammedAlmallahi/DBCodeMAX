@@ -1,0 +1,58 @@
+<%- include('../includes/head.ejs') %>
+<link rel= "stylesheet" href="/css/product.css">
+
+</head>
+<body>
+    <%- include('../includes/navigation.ejs') %>
+   <main>
+        <%if (prods.length > 0) {%>
+            <div class="grid">
+                <% for (let product of prods){ %>
+                        <article class="card product-item">
+                            <header class="card_header">
+                                <h1 class="product__title"><%= product.title %></h1>
+                            </header>
+                            <div class="card__image">
+                                <img src="/<%= product.imageUrl %>" alt="<%= product.title %>">
+                            </div>
+                            <div class="card__content">
+                                <h2 class="product__price"><%= product.price %>$</h2>
+                                <p class="product__description"> <%= product.description %></p>
+                            </div>
+                            <div class="card__actions">
+                                    <% if(isAuthentiated) { %>
+                                    <%- include('../includes/add-to-cart.ejs', {product:product}) %>
+                                    <% } %>
+                                   
+                                    <br>
+                                    <a href="/products/<%= product._id %>" class="btn">Detalies</a>
+                            </div>
+                        </article>
+                 <% } %>       
+            </div>
+            <section class="pagination">
+                <% if(currentPage !== 1 && PreviousPage !== 1) { %>
+                    <a href = "/?page=1">1</a>
+               <% } %>
+               
+               <% if( hasPreviousPage) { %>
+                <a href = "/?page=<%=PreviousPage%>"> <%= PreviousPage %> </a> 
+             <% } %>
+               
+                <a href="/?page=<%=currentPage%>" class="active"> <%= currentPage %> </a>
+
+             
+
+                <% if( hasNextPage) { %>
+                    <a href = "/?page=<%=nextPage%>"> <%= nextPage %> </a> 
+                 <% } %>
+
+                <% if( lastPage !== currentPage && nextPage !== lastPage) { %>
+                <a href = "/?page=<%=lastPage%>"> <%= lastPage %> </a>
+                <% } %>
+            </section>
+         <%} else {%>
+                <h1>No product Founded!</h1>
+            <% } %>
+   </main> 
+   <%- include('../includes/end.ejs') %>
